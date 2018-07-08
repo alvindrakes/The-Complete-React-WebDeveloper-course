@@ -11,11 +11,7 @@ class IndecisionApp extends React.Component {
 
 	// handle delete options
 	handleDeleteOptions() {
-		this.setState(() => {
-			return {
-				options: []
-			};
-		});
+		this.setState(() => ({ options: [] }));
 	}
 
 	handleAddOption(option) {
@@ -25,11 +21,7 @@ class IndecisionApp extends React.Component {
 			return 'This option already exist';
 		}
 
-		this.setState((prevState) => {
-			return {
-				options: prevState.options.concat(option)
-			};
-		});
+		this.setState((prevState) => ({options: prevState.options.concat(option)}));
 	}
 
 	// pick 1 option to be alerted
@@ -54,8 +46,8 @@ class IndecisionApp extends React.Component {
 }
 
 IndecisionApp.defaultProps = {
-    options: []
-}
+	options: []
+};
 
 const Header = (props) => {
 	return (
@@ -98,9 +90,7 @@ class AddOption extends React.Component {
 		const option = e.target.elements.option.value.trim();
 		const error = this.props.handleAddOption(option);
 
-		this.setState(() => {
-			return { error };
-		});
+		this.setState(() => ({error}));
 	}
 	render() {
 		return (
@@ -127,7 +117,7 @@ const Action = (props) => {
 	);
 };
 
-// stateless functional component
+/* stateless functional component */
 // Useful for component that only uses props
 // const User = (props) => {
 //     return (
