@@ -17,6 +17,7 @@ var IndecisionApp = function (_React$Component) {
 		var _this = _possibleConstructorReturn(this, (IndecisionApp.__proto__ || Object.getPrototypeOf(IndecisionApp)).call(this, props));
 
 		_this.handleDeleteOptions = _this.handleDeleteOptions.bind(_this);
+		_this.handleDeleteOptionOne = _this.handleDeleteOptionOne.bind(_this);
 		_this.handlePick = _this.handlePick.bind(_this);
 		_this.handleAddOption = _this.handleAddOption.bind(_this);
 		_this.state = {
@@ -25,14 +26,29 @@ var IndecisionApp = function (_React$Component) {
 		return _this;
 	}
 
-	// handle delete options
-
-
 	_createClass(IndecisionApp, [{
 		key: 'handleDeleteOptions',
 		value: function handleDeleteOptions() {
 			this.setState(function () {
 				return { options: [] };
+			});
+		}
+
+		// handleDeleteOptionOne(optionToRemove) {
+		// 	this.setState((prevState) => ({
+		//         options: prevState.options.filter((option) => optionToRemove !== option)
+		//     }))
+		// }
+
+	}, {
+		key: 'handleDeleteOptionOne',
+		value: function handleDeleteOptionOne(optionToRemove) {
+			this.setState(function (prevState) {
+				return {
+					options: prevState.options.filter(function (option) {
+						return optionToRemove !== option;
+					})
+				};
 			});
 		}
 	}, {
@@ -68,7 +84,11 @@ var IndecisionApp = function (_React$Component) {
 				null,
 				React.createElement(Header, { subtitle: subtitle }),
 				React.createElement(Action, { hasOptions: this.state.options.length > 0, handlePick: this.handlePick }),
-				React.createElement(Options, { options: this.state.options, handleDeleteOptions: this.handleDeleteOptions }),
+				React.createElement(Options, {
+					options: this.state.options,
+					handleDeleteOptions: this.handleDeleteOptions,
+					handleDeleteOptionOne: this.handleDeleteOptionOne
+				}),
 				React.createElement(AddOption, { handleAddOption: this.handleAddOption })
 			);
 		}
@@ -112,7 +132,7 @@ var Options = function Options(props) {
 			'Remove All'
 		),
 		props.options.map(function (option) {
-			return React.createElement(Option, { key: option, optionText: option });
+			return React.createElement(Option, { key: option, optionText: option, handleDeleteOptionOne: props.handleDeleteOptionOne });
 		})
 	);
 };
@@ -121,7 +141,21 @@ var Option = function Option(props) {
 	return React.createElement(
 		'div',
 		null,
-		props.optionText
+		props.optionText,
+		React.createElement(
+			'button',
+			{
+				// Why we cannot just use {props.handle...(props.optionText)} ?
+				/* Because you're invoking the function in the first example 
+            meaning you're passing its return value to the onClick handler 
+            which won't work. onClick requires a reference to a function, 
+            so you need to pass it a function and not the return value of one */
+				onClick: function onClick(e) {
+					props.handleDeleteOptionOne(props.optionText);
+				}
+			},
+			'remove'
+		)
 	);
 };
 
